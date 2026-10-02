@@ -77,6 +77,8 @@ test('lint reports rule names and trims matches', () => {
   expect(rules.includes('contrast')).toBe(true)
   expect(rules.includes('word')).toBe(true)
   expect(hits.every((h) => h.match.length <= 60)).toBe(true)
+  expect(lint('gh pr create --head 0xGondarxyz:add-slopless --base=main-line', { shell: true })).toEqual([])
+  expect(lint('a well-known fix').some((h) => h.rule === 'hyphen')).toBe(true)
 })
 
 async function run($: any, input: Record<string, unknown>) {
@@ -147,6 +149,11 @@ test('Bash writes to social paths are checked', async ($, on) => {
   await prime($)
   expect((await run($, { tool: 'Bash', command: `echo "${SLOP}" > social-media-posts/X/a.txt` })).denied).toBe(true)
   expect((await run($, { tool: 'Bash', command: 'ls social-media-posts' })).denied).toBe(false)
+  expect((await run($, { tool: 'Bash', command: `cd social-media-posts && echo "${SLOP}" > a.txt` })).denied).toBe(true)
+  expect((await run($, { tool: 'Bash', command: `python3 - <<'EOF'\nopen('social-media-posts/X/a.txt', 'w').write("${SLOP}")\nEOF` })).denied).toBe(true)
+  expect((await run($, { tool: 'Bash', command: `echo 'x' > social-media-posts/X/a.txt && echo '${SLOP}'` })).denied).toBe(true)
+  expect((await run($, { tool: 'Bash', command: 'echo "add robust LinkedIn login" >> CHANGELOG.md'})).denied).toBe(false)
+  expect((await run($, { tool: 'Bash', command: "cat > notes/pr.md <<'EOF'\nIt checks LinkedIn posts and it is robust.\nEOF" })).denied).toBe(false)
   expect((await run($, { tool: 'Bash', command: 'mkdir -p social-media-posts/X' })).denied).toBe(false)
 })
 

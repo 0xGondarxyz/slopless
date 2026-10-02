@@ -110,8 +110,8 @@ function strip(text: string, shell: boolean): string {
     .map((tok) => {
       if (/^\s*$/.test(tok)) return tok
       if (/[\/\\~]/.test(tok) || /\w+\.\w{2,}/.test(tok)) return ' '
-      // In a shell command, bare flags and file names ("-p", "social-media-posts") are not prose.
-      if (shell && /^[\w.-]+$/.test(tok) && tok.includes('-')) return ' '
+      // In a shell command, bare flags, file names, owner:branch and --key=value ("-p", "social-media-posts") are not prose.
+      if (shell && /^[\w.:=-]+$/.test(tok) && tok.includes('-')) return ' '
       return tok
     })
     .join('')

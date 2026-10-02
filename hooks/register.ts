@@ -29,9 +29,12 @@ function isSocialFile(path: string): boolean {
 }
 
 function bashTouchesSocial(cmd: string): boolean {
+  // Quoted prose (commit messages, titles) names a platform without writing to it.
   return cmd
+    .replace(/'[^'\n]*'|"(?:[^"\\\n]|\\.)*"/g, (q) => (/[ \t]/.test(q) ? ' ' : q))
     .split(/\s+/)
-    .map((t) => t.replace(/^['"]+|['"]+$/g, ''))
+    .map((t) => t.replace(/^['"(]+|['"),;:.!?]+$/g, ''))
+    .filter((t) => /[/._-]/.test(t))
     .some((t) => t.split('/').some((p) => SOCIAL_SEGMENT.test(p)))
 }
 
