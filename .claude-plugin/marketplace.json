@@ -1,0 +1,16 @@
+{
+  "name": "slopless",
+  "owner": {
+    "name": "Murat Can Yuksel",
+    "url": "https://github.com/0xGondarxyz"
+  },
+  "description": "Blocks AI sounding social media text.",
+  "plugins": [
+    {
+      "name": "slopless",
+      "source": "./",
+      "description": "Blocks AI sounding text in social media writing (X replies, X posts, LinkedIn posts) and injects the writing rules.",
+      "version": "0.1.0"
+    }
+  ]
+}
