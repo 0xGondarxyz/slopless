@@ -10,7 +10,7 @@
       "name": "slopless",
       "source": "./",
       "description": "Blocks AI sounding text in social media writing (X replies, X posts, LinkedIn posts) and injects the writing rules.",
-      "version": "0.1.1"
+      "version": "0.1.2"
     }
   ]
 }
